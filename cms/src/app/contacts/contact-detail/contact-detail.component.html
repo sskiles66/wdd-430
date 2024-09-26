@@ -1,14 +1,14 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h2>Name Will Go Here</h2>
-        <img src="barzeer.jpg">
+        <h2>{{contact.name}}</h2>
+        <img src={{contact.imageUrl}}>
         <div class="btn-group pull-right">
             <button class="btn btn-info">Edit</button>
             <button class="btn btn-danger">Delete</button>
         </div>
     </div>
     <div class="panel-body">
-        <p>Email: </p>
-        <p>Phone: </p>
+        <p>Email: {{contact.email}}</p>
+        <p>Phone: {{contact.phone}}</p>
     </div>
 </div>
