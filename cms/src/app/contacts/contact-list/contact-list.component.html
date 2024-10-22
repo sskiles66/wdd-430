@@ -3,12 +3,12 @@
 <div class="row panel panel-default">
     <div class="col-xs-12 panel-heading">
         <h1 class="pull-left">Contacts</h1>
-        <button class="btn btn-success pull-right">New Contact</button>
+        <a routerLink="new" class="btn btn-success pull-right">New Contact</a>
     </div>
 </div>
 
 <div class="row panel panel-default">
     <div class="col-xs-12 panel-body">
-        <app-contact-item *ngFor="let contact of contacts" [contact]="contact" (click)="onSelected(contact)"></app-contact-item>
+        <app-contact-item *ngFor="let contact of contacts" [contact]="contact"></app-contact-item>
     </div>
 </div>

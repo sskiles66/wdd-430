@@ -125,7 +125,7 @@ export const MOCKCONTACTS: Contact[] = [
     name: 'Stephen',
     email: 'stephen@byui.edu',
     phone: '999-999-9999',
-    imageUrl: 'thompsonda.jpg',
+    imageUrl: 'fredFlintstone.png',
     group: null
   },
 

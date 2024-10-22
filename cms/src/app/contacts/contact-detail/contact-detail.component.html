@@ -3,8 +3,8 @@
         <h2>{{contact.name}}</h2>
         <img src={{contact.imageUrl}}>
         <div class="btn-group pull-right">
-            <button class="btn btn-info">Edit</button>
-            <button class="btn btn-danger">Delete</button>
+            <a [routerLink]="['edit']" class="btn btn-info">Edit</a>
+            <a (click)="onDelete()" class="btn btn-danger">Delete</a>
         </div>
     </div>
     <div class="panel-body">
