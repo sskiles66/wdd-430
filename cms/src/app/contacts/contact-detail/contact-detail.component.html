@@ -1,14 +1,23 @@
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <h2>{{contact.name}}</h2>
-        <img src={{contact.imageUrl}}>
-        <div class="btn-group pull-right">
-            <a [routerLink]="['edit']" class="btn btn-info">Edit</a>
-            <a (click)="onDelete()" class="btn btn-danger">Delete</a>
+  <div class="panel-heading">
+    <h2>{{ contact.name }}</h2>
+    <img src="{{ contact.imageUrl }}" />
+    <div class="btn-group pull-right">
+      <a [routerLink]="['edit']" class="btn btn-info">Edit</a>
+      <a (click)="onDelete()" class="btn btn-danger">Delete</a>
+    </div>
+  </div>
+  <div class="panel-body">
+    <p>Email: {{ contact.email }}</p>
+    <p>Phone: {{ contact.phone }}</p>
+    <div class="row">
+      <div *ngFor="let item of contact.group" class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ item.name }}</h5>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="panel-body">
-        <p>Email: {{contact.email}}</p>
-        <p>Phone: {{contact.phone}}</p>
-    </div>
+  </div>
 </div>
