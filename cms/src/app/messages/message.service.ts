@@ -1,6 +1,7 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Message } from './message.model';
 import { MOCKMESSAGES } from './MOCKMESSAGES';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -9,14 +10,30 @@ export class MessageService {
 
   messages: Message[];
 
+  maxMessageId: number;
+
   @Output() messageChangedEvent = new EventEmitter<Message[]>();
 
-  constructor() {
-    this.messages = MOCKMESSAGES;
+  constructor(private http: HttpClient) {
+    // this.messages = MOCKMESSAGES;
+    // this.maxMessageId = this.getMaxId();
   }
 
-  getMessages(): Message[] {
-    return this.messages.slice();
+  getMessages() {
+    this.http
+    .get<any>(
+      'https://wdd430-1c82b-default-rtdb.firebaseio.com/messages.json'
+    )
+    .subscribe(
+      (messages: Message[]) => {
+        this.messages = messages;
+        this.maxMessageId = this.getMaxId();
+        this.messageChangedEvent.emit(this.messages.slice());
+      },
+      (error) => {
+        console.error('Error fetching posts:', error);
+      }
+    );
   }
 
   getMessage(id: string): Message{
@@ -24,7 +41,41 @@ export class MessageService {
   }
 
   addMessage(message: Message){
+    if (!message) {
+      return;
+    }
+    this.maxMessageId++;
+    message.id = this.maxMessageId.toString();
     this.messages.push(message);
-    this.messageChangedEvent.emit(this.messages.slice());
+    this.storeMessages();
+  }
+
+  getMaxId() {
+    let maxId = 0;
+    for (let i = 0; i < this.messages.length; i++) {
+      let currentId = parseInt(this.messages[i].id, 10);
+      if (currentId > maxId) {
+        maxId = currentId;
+      }
+    }
+    return maxId;
+  }
+
+  storeMessages() {
+    const stringMessages = JSON.stringify(this.messages);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    const url = `https://wdd430-1c82b-default-rtdb.firebaseio.com/messages.json`;
+
+    this.http.put(url, stringMessages, { headers }).subscribe(
+      (response) => {
+        this.messageChangedEvent.emit(this.messages.slice());
+      },
+      (error) => {
+        console.error('Error updating document:', error);
+      }
+    );
   }
 }
