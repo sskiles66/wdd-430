@@ -16,13 +16,14 @@ export class MessageService {
 
   constructor(private http: HttpClient) {
     // this.messages = MOCKMESSAGES;
+    // this.getMessages();
     // this.maxMessageId = this.getMaxId();
   }
 
   getMessages() {
     this.http
     .get<any>(
-      'https://wdd430-1c82b-default-rtdb.firebaseio.com/messages.json'
+      'http://localhost:3000/messages'
     )
     .subscribe(
       (messages: Message[]) => {
@@ -41,13 +42,36 @@ export class MessageService {
   }
 
   addMessage(message: Message){
+    // if (!message) {
+    //   return;
+    // }
+    // this.maxMessageId++;
+    // message.id = this.maxMessageId.toString();
+    // this.messages.push(message);
+    // this.storeMessages();
+
     if (!message) {
       return;
     }
-    this.maxMessageId++;
-    message.id = this.maxMessageId.toString();
-    this.messages.push(message);
-    this.storeMessages();
+
+    // make sure id of the new Document is empty
+    message.id = '';
+
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    // add to database
+    this.http
+      .post<{ message: string; returnedMessage: Message }>(
+        'http://localhost:3000/messages',
+        message,
+        { headers: headers }
+      )
+      .subscribe((responseData) => {
+        // add new document to documents
+        this.messages.push(responseData.returnedMessage);
+        // this.sortAndSend();
+        this.storeMessages();
+      });
   }
 
   getMaxId() {

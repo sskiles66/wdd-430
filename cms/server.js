@@ -5,6 +5,8 @@ var http = require('http');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var mongoose = require('mongoose');
+require("dotenv").config();
 
 // import the routing file to handle the default (index) route
 var index = require('./server/routes/app.js');
@@ -67,3 +69,11 @@ const server = http.createServer(app);
 server.listen(port, function() {
   console.log('API running on localhost: ' + port)
 });
+
+mongoose.connect(process.env.CONNECTION_STRING)
+    .then(() => {
+      console.log("connected to db");
+    })  
+    .catch((error)=>{
+        console.log(error);
+    })
