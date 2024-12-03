@@ -1,0 +1,46 @@
+<div class="scrollable-list">
+  <app-band-item
+    *ngFor="let band of testBands"
+    [band]="band"
+    (click)="selectBand(band)"
+  ></app-band-item>
+</div>
+
+<style>
+  .scrollable-list {
+    height: 200px; /* Adjust height as needed */
+    width: 200px;
+    overflow-y: scroll;
+    margin: 0 auto;
+  }
+
+  .scrollable-list::-webkit-scrollbar {
+    display: none; /* Hide the default scrollbar */
+  }
+
+  .scrollable-list::before,
+  .scrollable-list::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 50px; /* Adjust height for fade-in/out effect */
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 1)
+    );
+  }
+
+  .scrollable-list::before {
+    top: 0;
+  }
+
+  .scrollable-list::after {
+    bottom: 0;
+    background: linear-gradient(
+      to top,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 1)
+    );
+  }
+</style>
