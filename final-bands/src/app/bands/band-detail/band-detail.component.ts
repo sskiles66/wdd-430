@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Band } from '../band.model';
 import { BandService } from '../band.service';
+import { NgForm } from '@angular/forms';
 
 
 @Component({
@@ -42,6 +43,31 @@ export class BandDetailComponent implements OnInit{
 
   handleDelete() {
     console.log("delete")
-    this.selectedBand = null;
+    // this.selectedBand = null;
+    this.bandService.deleteBand(this.selectedBand.id);
+  }
+
+  onAddSubmit(form: NgForm) {
+    let value = form.value;
+    // Band is prepended to object when consoled logged, no issues for now
+    let newBand = new Band(
+      "5",
+      value.name,
+      value.genre,
+      value.imageUrl
+    );
+    this.bandService.addNewBand(newBand);
+  }
+
+  onEditSubmit(form: NgForm) {
+    let value = form.value;
+    // Band is prepended to object when consoled logged, no issues for now
+    let newBand = new Band(
+      this.selectedBand.id,
+      value.name,
+      value.genre,
+      value.imageUrl
+    );
+    this.bandService.updateBand(newBand);
   }
 }
