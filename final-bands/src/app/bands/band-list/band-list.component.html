@@ -1,4 +1,8 @@
-<div class="scrollable-list">
+<div *ngIf="testBands.length == 0">
+  <h1>Add a band on the right</h1>
+</div>
+
+<div *ngIf="testBands" class="scrollable-list">
   <app-band-item
     *ngFor="let band of testBands"
     [band]="band"
@@ -8,22 +12,27 @@
 
 <style>
   .scrollable-list {
-    height: 200px; /* Adjust height as needed */
+    height: 200px;
     width: 200px;
     overflow-y: scroll;
     margin: 0 auto;
+    border: 1px solid #ccc; /* Add a border for better visibility */
+    border-radius: 10px; /* Round the corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    padding: 20px; /* Add some internal padding */
+    background-color: #fff; /* Set a background color */
   }
 
   .scrollable-list::-webkit-scrollbar {
     display: none; /* Hide the default scrollbar */
   }
 
-  .scrollable-list::before,
+  /* .scrollable-list::before,
   .scrollable-list::after {
     content: "";
     position: absolute;
     width: 100%;
-    height: 50px; /* Adjust height for fade-in/out effect */
+    height: 50px; 
     background: linear-gradient(
       to bottom,
       rgba(255, 255, 255, 0),
@@ -42,5 +51,5 @@
       rgba(255, 255, 255, 0),
       rgba(255, 255, 255, 1)
     );
-  }
+  } */
 </style>

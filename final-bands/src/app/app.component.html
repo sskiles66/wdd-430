@@ -1,13 +1,25 @@
 
 <style>
 .flex-container {
-  display: flex;
-  justify-content: center;
+  /* display: flex;
+  justify-content: space-evenly; */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* align-items: center; */
+  justify-items: center;
+}
+.title {
+  text-align: center;
+}
+.main {
+  margin-top: 50px;
 }
 </style>
 
 <main class="main">
-  <h1>Welcome!</h1>
+  <div class="title">
+    <h1>Welcome to your favorite band Tracker!</h1>
+  </div>
   <div class="flex-container">
     <app-band-list />
     <app-band-detail />
