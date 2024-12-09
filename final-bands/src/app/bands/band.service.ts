@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { Band } from './band.model'; // Import the Band interface
+import { Band } from './band.model'; 
+import axios from 'axios';
 
 @Injectable({
   providedIn: 'root'
@@ -9,35 +10,8 @@ export class BandService {
   private selectedBandSubject = new BehaviorSubject<Band | null>(null);
   selectedBand$ = this.selectedBandSubject.asObservable();
 
-  // bands: Band[] = [];
+  bands: Band[] = [];
   bandListChangedEvent = new Subject<Band[]>();
-
-  testBands: Band[] = [
-    { 
-      id: "1",
-      bandTitle: "Linkin Park",
-      genre: "Rock",
-      imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXTqjNfKGHfTf_dfdq97zKaRapU0dfbYgZIw&s"
-     },
-     { 
-      id: "2",
-      bandTitle: "Linkin Park2",
-      genre: "Rock",
-      imageUrl: "ahhah"
-     },
-     { 
-      id: "3",
-      bandTitle: "Linkin Par3",
-      genre: "Rock",
-      imageUrl: "ahhah"
-     },
-     { 
-      id: "4",
-      bandTitle: "Sleep Token",
-      genre: "Metal",
-      imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKrfJWnvfp5TVLcFwIeia-f9zWwYZe_9dipg&s"
-     },
-  ];
 
   constructor() { }
 
@@ -47,40 +21,64 @@ export class BandService {
   }
 
   getBands() {
-    // simulate fetching
-    setTimeout(() => {
-      this.bandListChangedEvent.next(this.testBands.slice());
-    }, 2000); // Delay for 2 seconds (2000 milliseconds)
+    axios.get('http://localhost:3000/bands')
+    .then(response => {
+      this.bands = response.data;
+      this.bandListChangedEvent.next(this.bands.slice());
+    })
+    .catch(error => {
+      console.error('Error fetching posts:', error);
+    });
   }
 
   addNewBand(band: Band) {
-    this.testBands.push(band);
-    this.bandListChangedEvent.next(this.testBands.slice());
+    axios.post('http://localhost:3000/bands', band)
+      .then(response => {
+        // replace _id with actual _id in db
+        band._id = response.data.band._id;
+        this.bands.push(band);
+        this.bandListChangedEvent.next(this.bands.slice());
+      })
+      .catch(error => {
+        console.error('Error sending message:', error);
+      });
   }
 
   updateBand(updatedBand: Band) {
-    const pos = this.testBands.findIndex((d) => d.id === updatedBand.id);
-    if (pos < 0) {
-      return;
-    }
-    this.testBands[pos] = updatedBand;
-
-    //this updates selected contact with new updates
-    this.selectedBandSubject.next(this.testBands[pos]);
-    //this updates list of bands
-    this.bandListChangedEvent.next(this.testBands.slice());
+    axios.put(`http://localhost:3000/bands/${updatedBand._id}`, updatedBand)
+    .then(response => {
+      const pos = this.bands.findIndex((d) => d._id === updatedBand._id);
+      if (pos < 0) {
+        return;
+      }
+      this.bands[pos] = updatedBand;
+  
+      //this updates selected contact with new updates
+      this.selectedBandSubject.next(this.bands[pos]);
+      //this updates list of bands
+      this.bandListChangedEvent.next(this.bands.slice());
+    })
+    .catch(error => {
+      console.error('Error updating user:', error);
+    });
   }
 
-  deleteBand(id: String) {
-    const pos = this.testBands.findIndex((d) => d.id === id);
-    if (pos < 0) {
-      return;
-    }
-    this.testBands.splice(pos, 1);
-
-    //this updates selected contact with new updates
-    this.selectedBandSubject.next(null);
-    //this updates list of bands
-    this.bandListChangedEvent.next(this.testBands.slice());
+  deleteBand(_id: String) {
+    axios.delete(`http://localhost:3000/bands/${_id}`)
+    .then(response => {
+      const pos = this.bands.findIndex((d) => d._id === _id);
+      if (pos < 0) {
+        return;
+      }
+      this.bands.splice(pos, 1);
+  
+      //this updates selected contact with new updates
+      this.selectedBandSubject.next(null);
+      //this updates list of bands
+      this.bandListChangedEvent.next(this.bands.slice());
+    })
+    .catch(error => {
+      console.error('Error deleting user:', error);
+    });
   }
 }

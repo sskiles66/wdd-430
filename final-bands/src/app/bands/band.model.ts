@@ -1,11 +1,11 @@
 export class Band {
-    public id: string;
+    public _id: string;
     public bandTitle: string;
     public genre: string;
     public imageUrl: string;
 
-    constructor(id: string, bandTitle: string, genre: string, imageUrl: string ){
-        this.id = id;
+    constructor(_id: string, bandTitle: string, genre: string, imageUrl: string ){
+        this._id = _id;
         this.bandTitle = bandTitle;
         this.genre = genre;
         this.imageUrl = imageUrl

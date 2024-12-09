@@ -44,7 +44,7 @@ export class BandDetailComponent implements OnInit{
   handleDelete() {
     console.log("delete")
     // this.selectedBand = null;
-    this.bandService.deleteBand(this.selectedBand.id);
+    this.bandService.deleteBand(this.selectedBand._id);
   }
 
   onAddSubmit(form: NgForm) {
@@ -63,7 +63,7 @@ export class BandDetailComponent implements OnInit{
     let value = form.value;
     // Band is prepended to object when consoled logged, no issues for now
     let newBand = new Band(
-      this.selectedBand.id,
+      this.selectedBand._id,
       value.name,
       value.genre,
       value.imageUrl
