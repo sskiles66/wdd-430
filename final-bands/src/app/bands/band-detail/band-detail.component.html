@@ -21,7 +21,8 @@
     <h1>Band Title: {{ selectedBand.bandTitle }}</h1>
     <p>Genre: {{ selectedBand.genre }}</p>
     <div class="imgContainer">
-      <img src="{{ selectedBand.imageUrl }}" />
+      <img *ngIf="selectedBand.imageUrl" src="{{ selectedBand.imageUrl }}" />
+      <img *ngIf="!selectedBand.imageUrl" src="placeholder.jpeg" />
     </div>
     <!-- <p>{{ selectedBand.id }}</p> -->
   </div>

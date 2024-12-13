@@ -57,6 +57,7 @@ export class BandDetailComponent implements OnInit{
       value.imageUrl
     );
     this.bandService.addNewBand(newBand);
+    form.reset();
   }
 
   onEditSubmit(form: NgForm) {
@@ -69,5 +70,6 @@ export class BandDetailComponent implements OnInit{
       value.imageUrl
     );
     this.bandService.updateBand(newBand);
+    form.reset();
   }
 }
